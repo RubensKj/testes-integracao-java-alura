@@ -2,6 +2,8 @@ package br.com.alura.leilao.dao;
 
 import br.com.alura.leilao.model.Usuario;
 import br.com.alura.leilao.util.JPAUtil;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,14 +21,17 @@ class UsuarioDaoTest {
     void setUp() {
         this.em = JPAUtil.getEntityManager();
         this.dao = new UsuarioDao(em);
+        em.getTransaction().begin();
+    }
+
+    @AfterEach
+    void afterEach() {
+        em.getTransaction().rollback();
     }
 
     @Test
     void deveriaEncontrarUsuarioCadastrado() {
-        Usuario usuario = new Usuario("fulano", "fulano@email.com", "12345");
-        em.getTransaction().begin();
-        em.persist(usuario);
-        em.getTransaction().commit();
+        Usuario usuario = createUsuario();
 
         Usuario usuarioEncontrado = this.dao.buscarPorUsername(usuario.getNome());
 
@@ -38,14 +43,17 @@ class UsuarioDaoTest {
 
     @Test
     void naoDeveriaEncontrarUsuarioNaoCadastrado() {
-        Usuario usuario = new Usuario("fulano", "fulano@email.com", "12345");
-        em.getTransaction().begin();
-        em.persist(usuario);
-        em.getTransaction().commit();
+        createUsuario();
 
         assertThrows(
                 NoResultException.class,
                 () -> this.dao.buscarPorUsername("outro_usuario_nome")
         );
+    }
+
+    private Usuario createUsuario() {
+        Usuario usuario = new Usuario("fulano", "fulano@email.com", "12345");
+        em.persist(usuario);
+        return usuario;
     }
 }

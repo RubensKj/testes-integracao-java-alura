@@ -53,4 +53,12 @@ public class LoginSeleniumTest {
         assertTrue(browser.getPageSource().contains("Usuário e senha inválidos."));
         assertThrows(NoSuchElementException.class, () -> browser.findElement(By.id("usuario-logado")).getText());
     }
+
+    @Test
+    void shouldntAccessRestrictedAreaWithoutAuthenticated() {
+        this.browser.navigate().to("http://localhost:8080/leiloes/2");
+
+        assertEquals(LOGIN_PAGE, browser.getCurrentUrl());
+        assertFalse(browser.getPageSource().contains("Dados do Leilão"));
+    }
 }

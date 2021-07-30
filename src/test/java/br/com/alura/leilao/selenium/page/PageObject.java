@@ -1,10 +1,23 @@
 package br.com.alura.leilao.selenium.page;
 
-import static br.com.alura.leilao.selenium.util.PropertyWebDriver.setDriverPathInSystem;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
-public abstract class PageObject {
+public abstract class PageObject extends ChromePage {
+
+    private final WebDriver webDriver;
 
     public PageObject() {
-        setDriverPathInSystem();
+        this.webDriver = new ChromeDriver();
+    }
+
+    public PageObject(WebDriver webDriver) {
+        this.webDriver = webDriver;
+    }
+
+    public abstract void quitBrowser();
+
+    public WebDriver getBrowser() {
+        return webDriver;
     }
 }

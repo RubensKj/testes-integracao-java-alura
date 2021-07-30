@@ -10,16 +10,14 @@ public class LoginPage extends PageObject {
 
     private static final String LOGIN_PAGE = "http://localhost:8080/login";
 
-    public LoginPage() {
-        getBrowser().navigate().to(LOGIN_PAGE);
-    }
-
     public void quitBrowser() {
         getBrowser().quit();
     }
 
     public void fillLoginFields(String username, String password) {
         WebDriver browser = getBrowser();
+
+        browser.navigate().to(LOGIN_PAGE);
         browser.findElement(By.id("username")).sendKeys(username);
         browser.findElement(By.id("password")).sendKeys(password);
     }

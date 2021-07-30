@@ -8,16 +8,20 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LeiloesSeleniumTest {
 
-    private LoginPage loginPage;
     private LeiloesPage leiloesPage;
+    private CadastroLeilaoPage cadastroLeilaoPage;
 
     @BeforeEach
     void setUp() {
-        this.loginPage = new LoginPage();
+        LoginPage loginPage = new LoginPage();
+        loginPage.fillLoginFields("fulano", "pass");
+        this.leiloesPage = loginPage.submit();
+        this.cadastroLeilaoPage = this.leiloesPage.navigateToForm();
     }
 
     @AfterEach
@@ -27,17 +31,21 @@ public class LeiloesSeleniumTest {
 
     @Test
     void shouldSaveLeilao() {
-        this.loginPage.fillLoginFields("fulano", "pass");
-        this.leiloesPage = this.loginPage.submit();
-
-        CadastroLeilaoPage cadastroLeilaoPage = this.leiloesPage.navigateToForm();
-
         String hoje = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         String nome = "Leilão do dia " + hoje;
         String valor = "500.00";
 
-        this.leiloesPage = cadastroLeilaoPage.saveLeilao(nome, valor, hoje);
+        this.leiloesPage = this.cadastroLeilaoPage.saveLeilao(nome, valor, hoje);
 
         assertTrue(this.leiloesPage.isLeilaoCadastrado(nome, valor, hoje));
+    }
+
+    @Test
+    void shouldntSaveLeilao() {
+        this.leiloesPage = this.cadastroLeilaoPage.saveLeilao("", "", "");
+
+        assertFalse(this.cadastroLeilaoPage.isActualPage());
+        assertTrue(this.leiloesPage.isActualPage());
+        assertTrue(this.cadastroLeilaoPage.isContainsMessagesErrors());
     }
 }

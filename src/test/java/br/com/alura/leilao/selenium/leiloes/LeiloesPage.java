@@ -11,7 +11,6 @@ public class LeiloesPage extends PageObject {
 
     public LeiloesPage(WebDriver webDriver) {
         super(webDriver);
-        getBrowser().navigate().to(LEILOES_URL);
     }
 
     public void quitBrowser() {
@@ -21,9 +20,13 @@ public class LeiloesPage extends PageObject {
     public CadastroLeilaoPage navigateToForm() {
         WebDriver browser = getBrowser();
 
-        browser.navigate().to(LEILOES_URL.concat("/new"));
+        browser.navigate().to(getLeilaoCadastroUrl());
 
         return new CadastroLeilaoPage(browser);
+    }
+
+    private String getLeilaoCadastroUrl() {
+        return LEILOES_URL.concat("/new");
     }
 
     public boolean isLeilaoCadastrado(String nome, String valor, String data) {
@@ -38,5 +41,9 @@ public class LeiloesPage extends PageObject {
         return colunaNome.getText().equals(nome)
                 && colunaDataAbertura.getText().equals(data)
                 && colunaValorInicial.getText().equals(valor);
+    }
+
+    public boolean isActualPage() {
+        return LEILOES_URL.equals(getBrowser().getCurrentUrl());
     }
 }

@@ -15,7 +15,9 @@ public abstract class PageObject extends ChromePage {
         this.webDriver = webDriver;
     }
 
-    public abstract void quitBrowser();
+    public void quitBrowser() {
+        this.webDriver.quit();
+    }
 
     public WebDriver getBrowser() {
         return webDriver;

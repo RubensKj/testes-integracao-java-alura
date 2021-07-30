@@ -10,10 +10,6 @@ public class LoginPage extends PageObject {
 
     private static final String LOGIN_PAGE = "http://localhost:8080/login";
 
-    public void quitBrowser() {
-        getBrowser().quit();
-    }
-
     public void fillLoginFields(String username, String password) {
         WebDriver browser = getBrowser();
 

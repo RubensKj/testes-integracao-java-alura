@@ -12,11 +12,6 @@ public class CadastroLeilaoPage extends PageObject {
         super(webDriver);
     }
 
-    @Override
-    public void quitBrowser() {
-        this.getBrowser().quit();
-    }
-
     public LeiloesPage saveLeilao(String nome, String valorInicial, String dataAbertura) {
         WebDriver browser = getBrowser();
 

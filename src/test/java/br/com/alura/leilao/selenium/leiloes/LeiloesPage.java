@@ -13,10 +13,6 @@ public class LeiloesPage extends PageObject {
         super(webDriver);
     }
 
-    public void quitBrowser() {
-        getBrowser().quit();
-    }
-
     public CadastroLeilaoPage navigateToForm() {
         WebDriver browser = getBrowser();
 
